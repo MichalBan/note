@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
-import 'dart:math';
+import 'note_edit.dart';
+import 'note_wall.dart';
+import 'constants.dart' as constants;
 
 void main() {
   runApp(const MyApp());
@@ -12,59 +13,43 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Evil Incarnate',
+      title: 'note',
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('note'),
-          actions: [IconButton(onPressed: onPressed, icon: const Icon(Icons.menu))],
+          iconTheme: const IconThemeData(
+            color: constants.textColor, //change your color here
+          ),
+          backgroundColor: constants.navbarColor,
+          title: const Text(
+            "note",
+            style: TextStyle(color: constants.textColor),
+          ),
+          elevation: 0.0,
+          automaticallyImplyLeading: false,
+          actions: [
+            Builder(
+              builder: (context) => IconButton(
+                  onPressed: () {
+                    onAddPressed(context);
+                  },
+                  icon: const Icon(Icons.add)),
+            ),
+            IconButton(
+                onPressed: onSearchPressed, icon: const Icon(Icons.search)),
+            IconButton(onPressed: onMenuPressed, icon: const Icon(Icons.menu)),
+          ],
         ),
-        body: const Center(child: RandomWords()),
+        body: const Center(child: NoteWall()),
       ),
     );
   }
 
-  void onPressed()
-  {
-
-  }
-}
-
-class RandomWords extends StatefulWidget {
-  const RandomWords({Key? key}) : super(key: key);
-
-  @override
-  State<RandomWords> createState() => _RandomWordsState();
-}
-
-class _RandomWordsState extends State<RandomWords> {
-  final _suggestions = <String>[];
-
-  final _biggerFont = const TextStyle(fontSize: 18);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16.0),
-      itemBuilder: (context, i) {
-        if (i.isOdd) return const Divider();
-
-        final index = i ~/ 2;
-        if (index >= _suggestions.length) {
-          _suggestions.addAll(createRandomWords());
-        }
-        return Text(
-          _suggestions[index],
-          style: _biggerFont,
-        );
-      },
-    );
+  void onAddPressed(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => NoteEdit()));
   }
 
-  List<String> createRandomWords() {
-    var randomWords = <String>[];
-    for (var i = 0; i < 10; ++i) {
-      randomWords.add(all[Random().nextInt(all.length)]);
-    }
-    return randomWords;
-  }
+  void onSearchPressed() {}
+
+  void onMenuPressed() {}
 }
