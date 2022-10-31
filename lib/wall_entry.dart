@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import 'constants.dart' as constants;
+import 'constants.dart' as cst;
+import 'note.dart';
 
-class WallEntry extends StatefulWidget implements PreferredSizeWidget {
-  const WallEntry({Key? key}) : super(key: key);
+class WallEntry extends StatelessWidget implements PreferredSizeWidget {
+  final Note _itsNote;
+
+  const WallEntry(this._itsNote, {super.key});
 
   @override
-  State<WallEntry> createState() => _WallEntryState();
-
-  @override
-  Size get preferredSize => const Size.fromHeight(25.0);
-}
-
-class _WallEntryState extends State<WallEntry> {
-  final _wallFont = const TextStyle(fontSize: 18);
-  String content = "big in japan";
+  Size get preferredSize => const Size.fromHeight(50.0);
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +21,14 @@ class _WallEntryState extends State<WallEntry> {
           right: BorderSide(color: Color(0xFF7F7F7F)),
           bottom: BorderSide(color: Color(0xFF7F7F7F)),
         ),
-        color: constants.backgroundColor,
+        color: cst.backgroundColor,
       ),
       child: Text(
-          content,
+          _itsNote.getTitle(),
           textAlign: TextAlign.center,
-          style: _wallFont
+          style: cst.wallFont
       ),
     );
   }
 }
+
