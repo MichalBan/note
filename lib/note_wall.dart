@@ -17,18 +17,19 @@ class NoteWallState extends State<NoteWall> {
 
   @override
   Widget build(BuildContext context) {
+    updateNoteEntries();
     return MaterialApp(
       title: 'note',
       theme: ThemeData(scaffoldBackgroundColor: Colors.green),
       home: Scaffold(
         appBar: AppBar(
           iconTheme: const IconThemeData(
-            color: constants.textColor, //change your color here
+            color: constants.colorIcons,
           ),
-          backgroundColor: constants.navbarColor,
+          backgroundColor: constants.colorNavbar,
           title: const Text(
             "note",
-            style: TextStyle(color: constants.textColor),
+            style: TextStyle(color: constants.colorIcons),
           ),
           elevation: 0.0,
           automaticallyImplyLeading: false,
@@ -59,17 +60,22 @@ class NoteWallState extends State<NoteWall> {
     );
   }
 
-  void updateNoteEntries() {
+  void deleteNote(int id) {
+    NoteList().deleteNote(id);
     setState(() {
-      _entryList.clear();
-      NoteList().getNotes().forEach((note) {
-        _entryList.add(WallEntry(note));
-      });
+      _entryList.removeAt(id);
+    });
+  }
+
+  void updateNote(int id){
+    setState(() {
+      _entryList[id] = WallEntry(NoteList().getNotes()[id]);
     });
   }
 
   void onAddPressed(BuildContext context) {
     NoteList().addNote();
+    _entryList.add(WallEntry(NoteList().getLastNote()));
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => NoteEdit(NoteList().getLastId()),
@@ -80,4 +86,11 @@ class NoteWallState extends State<NoteWall> {
   void onSearchPressed() {}
 
   void onMenuPressed() {}
+
+  void updateNoteEntries() {
+    _entryList.clear();
+    NoteList().getNotes().forEach((note) {
+      _entryList.add(WallEntry(note));
+    });
+  }
 }

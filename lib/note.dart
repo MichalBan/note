@@ -1,10 +1,29 @@
 import 'dart:math';
 
 class Note{
-  int _id;
-  String _content;
+  int _id = 0;
+  String _content =  "";
+  DateTime? _deadline;
 
-  Note(this._id, this._content);
+  Note(int id, String content){
+    _id = id;
+    _content = content;
+    _deadline = null;
+  }
+
+  Note.dated(int id, String content, DateTime deadline){
+    _id = id;
+    _content = content;
+    _deadline = deadline;
+  }
+
+  void setDeadline(DateTime? newDeadline){
+    _deadline = newDeadline;
+  }
+
+  DateTime? getDeadline(){
+    return _deadline;
+  }
 
   void setId(int newId){
     _id = newId;
@@ -24,5 +43,9 @@ class Note{
 
   String getTitle(){
     return _content.substring(0, min(_content.length, 20));
+  }
+
+  void decrementIndex() {
+    --_id;
   }
 }
