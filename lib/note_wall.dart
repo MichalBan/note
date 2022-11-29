@@ -5,6 +5,8 @@ import 'constants.dart' as constants;
 import 'note_edit.dart';
 
 class NoteWall extends StatefulWidget {
+  const NoteWall({super.key});
+
   static of(BuildContext context, {bool root = false}) =>
       context.findAncestorStateOfType<NoteWallState>();
 

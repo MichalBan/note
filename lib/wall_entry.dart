@@ -3,13 +3,10 @@ import 'constants.dart' as cst;
 import 'note.dart';
 import 'note_edit.dart';
 
-class WallEntry extends StatelessWidget implements PreferredSizeWidget {
+class WallEntry extends StatelessWidget {
   final Note _itsNote;
 
   const WallEntry(this._itsNote, {super.key});
-
-  @override
-  Size get preferredSize => const Size.fromHeight(50.0);
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +15,7 @@ class WallEntry extends StatelessWidget implements PreferredSizeWidget {
         onPressed(context);
       },
       child: Container(
+        height: 50,
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.0),
         decoration: BoxDecoration(
           border: const Border(
@@ -28,8 +26,11 @@ class WallEntry extends StatelessWidget implements PreferredSizeWidget {
           ),
           color: getNoteColor(),
         ),
-        child: Text(_itsNote.getTitle(),
-            textAlign: TextAlign.center, style: cst.wallFont),
+        child: Align(
+          alignment: Alignment.center,
+          child: Text(_itsNote.getTitle(),
+              textAlign: TextAlign.center, style: cst.wallFont),
+        ),
       ),
     );
   }
@@ -40,19 +41,19 @@ class WallEntry extends StatelessWidget implements PreferredSizeWidget {
     ));
   }
 
-  Color getNoteColor(){
-    if(_itsNote.getDeadline() == null){
+  Color getNoteColor() {
+    if (_itsNote.getDeadline() == null) {
       return cst.colorDeadlineTimeless;
     }
-    if(_itsNote.getDeadline()!.compareTo(DateTime.now()) < 0){
+    if (_itsNote.getDeadline()!.compareTo(DateTime.now()) < 0) {
       return cst.colorDeadlinePast;
     }
 
     int days = daysBetween(DateTime.now(), _itsNote.getDeadline()!);
-    if(days > 5){
+    if (days > 5) {
       return cst.colorDeadlineFar;
     }
-    if(days > 1){
+    if (days > 1) {
       return cst.colorDeadlineMedium;
     }
     return cst.colorDeadlineShort;
@@ -63,5 +64,4 @@ class WallEntry extends StatelessWidget implements PreferredSizeWidget {
     to = DateTime(to.year, to.month, to.day);
     return (to.difference(from).inHours / 24).round();
   }
-
 }
