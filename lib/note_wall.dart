@@ -45,7 +45,7 @@ class NoteWallState extends State<NoteWall> {
             ),
             IconButton(
                 onPressed: onSearchPressed, icon: const Icon(Icons.search)),
-            IconButton(onPressed: onMenuPressed, icon: const Icon(Icons.menu)),
+            //IconButton(onPressed: onMenuPressed, icon: const Icon(Icons.menu)),
           ],
         ),
         body: Center(
