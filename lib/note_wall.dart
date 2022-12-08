@@ -90,6 +90,7 @@ class NoteWallState extends State<NoteWall> {
   void onMenuPressed() {}
 
   void updateNoteEntries() {
+    NoteList().sortNotesByDeadline();
     _entryList.clear();
     NoteList().getNotes().forEach((note) {
       _entryList.add(WallEntry(note));

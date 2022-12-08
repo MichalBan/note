@@ -57,8 +57,38 @@ class NoteList {
     await prefs.setStringList(id.toString(), [_itsNotes[id].getContent(), _itsNotes[id].getDeadline().toString()]);
   }
 
+  Future<void> saveNotes() async {
+    sortNotesByDeadline();
+    for(var note in _itsNotes){
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setStringList(note.getId().toString(), [note.getContent(), note.getDeadline().toString()]);
+    }
+  }
+
   Future<void> forgetNote(int id) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(id.toString());
+  }
+
+  void sortNotesByDeadline(){
+    _itsNotes.sort((a, b){
+      if(a.getDeadline() == null){
+        return 1;
+      }
+      if(b.getDeadline() == null){
+        return -1;
+      }
+      return a.getDeadline()!.compareTo(b.getDeadline()!);
+    });
+
+    fixIndexes();
+  }
+
+  void fixIndexes() {
+    int index = 0;
+    for(var note in _itsNotes){
+      note.setId(index);
+      ++index;
+    }
   }
 }

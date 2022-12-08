@@ -68,7 +68,8 @@ class _NoteEditState extends State<NoteEdit> {
   }
 
   void onHomePressed(BuildContext context) {
-    NoteList().saveNote(widget._id);
+    //NoteList().saveNote(widget._id);
+    NoteList().saveNotes();
     NoteWall.of(context).updateNote(widget._id);
     Navigator.pop(context);
   }
@@ -84,12 +85,11 @@ class _NoteEditState extends State<NoteEdit> {
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
-        lastDate: DateTime(2101));
-    if (picked != null &&
-        picked != NoteList().getNotes()[widget._id].getDeadline()) {
+        lastDate: DateTime(2101),
+        helpText: "Pick Deadline",
+        cancelText: "No Deadline");
       setState(() {
         NoteList().getNotes()[widget._id].setDeadline(picked);
       });
-    }
   }
 }
