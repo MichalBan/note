@@ -1,48 +1,61 @@
 import 'dart:math';
 
-class Note{
+class Note {
   int _id = 0;
-  String _content =  "";
+  String _content = "";
   DateTime? _deadline;
+  DateTime _updateDate = DateTime(0);
 
-  Note(int id, String content){
+  Note(int id, String content) {
     _id = id;
     _content = content;
     _deadline = null;
+    _updateDate = DateTime.now();
   }
 
-  Note.dated(int id, String content, DateTime deadline){
+  Note.dated(int id, String content, DateTime? deadline, DateTime updateDate) {
     _id = id;
     _content = content;
     _deadline = deadline;
+    _updateDate = updateDate;
   }
 
-  void setDeadline(DateTime? newDeadline){
+  void setDeadline(DateTime? newDeadline) {
     _deadline = newDeadline;
   }
 
-  DateTime? getDeadline(){
+  DateTime? getDeadline() {
     return _deadline;
   }
 
-  void setId(int newId){
+  DateTime getUpdateDate() {
+    return _updateDate;
+  }
+
+  void setId(int newId) {
     _id = newId;
   }
 
-  int getId(){
+  int getId() {
     return _id;
   }
 
-  void setContent(String newContent){
+  void setContent(String newContent) {
     _content = newContent;
   }
 
-  String getContent(){
+  String getContent() {
     return _content;
   }
 
-  String getTitle(){
-    return _content.substring(0, min(_content.length, 20));
+  String getTitle() {
+    int len = min(_content.length, 10);
+
+    if (_deadline == null) {
+      return _content.substring(0, len);
+    } else {
+      return "${_deadline!.day}/${_deadline!.month} ${_content.substring(0, min(_content.length, 10))} ${_updateDate.day}/${_updateDate.month}";
+    }
   }
 
   void decrementIndex() {

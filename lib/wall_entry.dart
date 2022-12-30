@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'constants.dart' as cst;
+import 'settinger.dart';
+import 'deadline_colorist.dart';
 import 'note.dart';
 import 'note_edit.dart';
 
@@ -29,7 +30,7 @@ class WallEntry extends StatelessWidget {
         child: Align(
           alignment: Alignment.center,
           child: Text(_itsNote.getTitle(),
-              textAlign: TextAlign.center, style: cst.wallFont),
+              textAlign: TextAlign.center, style: Settinger().getWallFont()),
         ),
       ),
     );
@@ -42,26 +43,23 @@ class WallEntry extends StatelessWidget {
   }
 
   Color getNoteColor() {
-    if (_itsNote.getDeadline() == null) {
-      return cst.colorDeadlineTimeless;
-    }
-    if (_itsNote.getDeadline()!.compareTo(DateTime.now()) < 0) {
-      return cst.colorDeadlinePast;
-    }
-
-    int days = daysBetween(DateTime.now(), _itsNote.getDeadline()!);
-    if (days > 5) {
-      return cst.colorDeadlineFar;
-    }
-    if (days > 1) {
-      return cst.colorDeadlineMedium;
-    }
-    return cst.colorDeadlineShort;
+    int percent = calculateDeadlinePercent();
+    return DeadlineColourist().getProperColor(percent);
   }
 
-  int daysBetween(DateTime from, DateTime to) {
-    from = DateTime(from.year, from.month, from.day);
-    to = DateTime(to.year, to.month, to.day);
-    return (to.difference(from).inHours / 24).round();
+  int calculateDeadlinePercent(){
+    if(_itsNote.getDeadline() == null){
+      return 101;
+    }
+
+    DateTime to = _itsNote.getDeadline()!; //rough math, but good enough
+    DateTime from = _itsNote.getUpdateDate();
+    int left = (to.difference(DateTime.now()).inMinutes).round();
+    if(left < 0){
+      return -1;
+    }
+    int extent = (to.difference(from).inMinutes).round();
+
+    return (100*left/extent).round();
   }
 }

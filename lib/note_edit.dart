@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'constants.dart' as cst;
+import 'settinger.dart';
 import 'note_list.dart';
 import 'note_wall.dart';
 
@@ -17,11 +17,11 @@ class _NoteEditState extends State<NoteEdit> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: cst.colorIcons),
-        backgroundColor: cst.colorNavbar,
+        iconTheme: IconThemeData(color: Settinger().getPrimaryColor()),
+        backgroundColor: Settinger().getBackgroundColor(),
         title: Text(
           NoteList().getNotes()[widget._id].getTitle(),
-          style: const TextStyle(color: cst.colorIcons),
+          style: TextStyle(color: Settinger().getPrimaryColor()),
         ),
         elevation: 0.0,
         automaticallyImplyLeading: false,
@@ -54,12 +54,12 @@ class _NoteEditState extends State<NoteEdit> {
             onTextChanged(text);
           },
           maxLines: null,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             filled: true,
-            fillColor: cst.colorBackground,
+            fillColor: Settinger().getBackgroundEditColor(),
           ),
           initialValue: NoteList().getNotes()[widget._id].getContent(),
-          style: cst.wallFont),
+          style: Settinger().getWallFont()),
     );
   }
 
@@ -68,7 +68,6 @@ class _NoteEditState extends State<NoteEdit> {
   }
 
   void onHomePressed(BuildContext context) {
-    //NoteList().saveNote(widget._id);
     NoteList().saveNotes();
     NoteWall.of(context).updateNote(widget._id);
     Navigator.pop(context);

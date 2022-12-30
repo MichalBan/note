@@ -44,24 +44,23 @@ class NoteList {
       if (list == null) {
         break;
       }
-      if(list[1] == "null"){
-        _itsNotes.add(Note(noteId, list[0]));
-      }else{
-        _itsNotes.add(Note.dated(noteId, list[0], DateTime.parse(list[1])));
-      }
-    }
-  }
 
-  Future<void> saveNote(int id) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList(id.toString(), [_itsNotes[id].getContent(), _itsNotes[id].getDeadline().toString()]);
+      DateTime? deadline;
+      if(list[1] == "null"){
+        deadline = null;
+      }else{
+        deadline = DateTime.parse(list[1]);
+      }
+      DateTime updateDate = DateTime.parse(list[2]);
+      _itsNotes.add(Note.dated(noteId, list[0], deadline, updateDate));
+    }
   }
 
   Future<void> saveNotes() async {
     sortNotesByDeadline();
     for(var note in _itsNotes){
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setStringList(note.getId().toString(), [note.getContent(), note.getDeadline().toString()]);
+      await prefs.setStringList(note.getId().toString(), [note.getContent(), note.getDeadline().toString(), note.getUpdateDate().toString()]);
     }
   }
 

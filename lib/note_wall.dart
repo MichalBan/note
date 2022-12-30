@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'note_list.dart';
 import 'wall_entry.dart';
-import 'constants.dart' as constants;
+import 'settinger.dart';
 import 'note_edit.dart';
+import 'settings_page.dart';
 
 class NoteWall extends StatefulWidget {
   const NoteWall({super.key});
@@ -22,16 +23,16 @@ class NoteWallState extends State<NoteWall> {
     updateNoteEntries();
     return MaterialApp(
       title: 'note',
-      theme: ThemeData(scaffoldBackgroundColor: Colors.green),
+      theme: ThemeData(scaffoldBackgroundColor: Settinger().getBackgroundColor()),
       home: Scaffold(
         appBar: AppBar(
-          iconTheme: const IconThemeData(
-            color: constants.colorIcons,
+          iconTheme: IconThemeData(
+            color: Settinger().getPrimaryColor(),
           ),
-          backgroundColor: constants.colorNavbar,
-          title: const Text(
+          backgroundColor: Settinger().getBackgroundColor(),
+          title: Text(
             "note",
-            style: TextStyle(color: constants.colorIcons),
+            style: TextStyle(color: Settinger().getPrimaryColor()),
           ),
           elevation: 0.0,
           automaticallyImplyLeading: false,
@@ -43,9 +44,16 @@ class NoteWallState extends State<NoteWall> {
                   },
                   icon: const Icon(Icons.add)),
             ),
+            //IconButton(onPressed: onMenuPressed, icon: const Icon(Icons.menu)),
+            Builder(
+              builder: (context) => IconButton(
+                  onPressed: () {
+                    onSettingsPressed(context);
+                  },
+                  icon: const Icon(Icons.settings)),
+            ),
             IconButton(
                 onPressed: onSearchPressed, icon: const Icon(Icons.search)),
-            //IconButton(onPressed: onMenuPressed, icon: const Icon(Icons.menu)),
           ],
         ),
         body: Center(
@@ -60,6 +68,12 @@ class NoteWallState extends State<NoteWall> {
         ),
       ),
     );
+  }
+
+  void rebuild(){
+    setState(() {
+
+    });
   }
 
   void deleteNote(int id) {
@@ -81,6 +95,14 @@ class NoteWallState extends State<NoteWall> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => NoteEdit(NoteList().getLastId()),
+      ),
+    );
+  }
+
+  void onSettingsPressed(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SettingsPage(),
       ),
     );
   }
