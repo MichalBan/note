@@ -27,10 +27,37 @@ class WallEntry extends StatelessWidget {
           ),
           color: getNoteColor(),
         ),
-        child: Align(
-          alignment: Alignment.center,
-          child: Text(_itsNote.getTitle(),
-              textAlign: TextAlign.center, style: Settinger().getWallFont()),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 2,
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(_itsNote.getDeadlineText(),
+                    textAlign: TextAlign.center,
+                    style: Settinger().getWallFont()),
+              ),
+            ),
+            Expanded(
+              flex: 6,
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(_itsNote.getTitle(),
+                    maxLines: 1,
+                    textAlign: TextAlign.center,
+                    style: Settinger().getWallFont()),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(_itsNote.getUpdateDateText(),
+                    textAlign: TextAlign.center,
+                    style: Settinger().getWallFont()),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -47,19 +74,19 @@ class WallEntry extends StatelessWidget {
     return DeadlineColourist().getProperColor(percent);
   }
 
-  int calculateDeadlinePercent(){
-    if(_itsNote.getDeadline() == null){
+  int calculateDeadlinePercent() {
+    if (_itsNote.getDeadline() == null) {
       return 101;
     }
 
     DateTime to = _itsNote.getDeadline()!; //rough math, but good enough
     DateTime from = _itsNote.getUpdateDate();
     int left = (to.difference(DateTime.now()).inMinutes).round();
-    if(left < 0){
+    if (left < 0) {
       return -1;
     }
     int extent = (to.difference(from).inMinutes).round();
 
-    return (100*left/extent).round();
+    return (100 * left / extent).round();
   }
 }

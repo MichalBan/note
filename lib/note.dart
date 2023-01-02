@@ -40,6 +40,10 @@ class Note {
     return _id;
   }
 
+  void decrementId() {
+    --_id;
+  }
+
   void setContent(String newContent) {
     _content = newContent;
   }
@@ -49,16 +53,24 @@ class Note {
   }
 
   String getTitle() {
-    int len = min(_content.length, 10);
+    int len = min(_content.length, 30);
+    return _content.substring(0, len);
 
     if (_deadline == null) {
-      return _content.substring(0, len);
     } else {
       return "${_deadline!.day}/${_deadline!.month} ${_content.substring(0, min(_content.length, 10))} ${_updateDate.day}/${_updateDate.month}";
     }
   }
 
-  void decrementIndex() {
-    --_id;
+  String getDeadlineText(){
+    if(_deadline == null){
+      return "";
+    }else{
+      return "${_deadline!.day}/${_deadline!.month}";
+    }
+  }
+
+  String getUpdateDateText(){
+    return "${_updateDate.day}/${_updateDate.month}";
   }
 }

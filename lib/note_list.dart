@@ -27,7 +27,7 @@ class NoteList {
   void deleteNote(int id) {
     _itsNotes.removeAt(id);
     for (int i = id; i < _itsNotes.length; ++i) {
-      _itsNotes[i].decrementIndex();
+      _itsNotes[i].decrementId();
     }
   }
 
