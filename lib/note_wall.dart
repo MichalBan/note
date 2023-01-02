@@ -17,13 +17,15 @@ class NoteWall extends StatefulWidget {
 
 class NoteWallState extends State<NoteWall> {
   final List<WallEntry> _entryList = <WallEntry>[];
+  String _searchedSubstring = "";
 
   @override
   Widget build(BuildContext context) {
     updateNoteEntries();
     return MaterialApp(
       title: 'note',
-      theme: ThemeData(scaffoldBackgroundColor: Settinger().getBackgroundColor()),
+      theme:
+          ThemeData(scaffoldBackgroundColor: Settinger().getBackgroundColor()),
       home: Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(
@@ -52,6 +54,21 @@ class NoteWallState extends State<NoteWall> {
                   },
                   icon: const Icon(Icons.settings)),
             ),
+            //IconButton(onPressed: onMenuPressed, icon: const Icon(Icons.menu)),
+            ConstrainedBox(
+              constraints: BoxConstraints.tight(const Size(100, 25)),
+              child: TextFormField(
+                  onChanged: (text) {
+                    _searchedSubstring = text;
+                  },
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Settinger().getBackgroundEditColor(),
+                  ),
+                  initialValue: _searchedSubstring,
+                  style: Settinger().getWallFont()),
+            ),
             IconButton(
                 onPressed: onSearchPressed, icon: const Icon(Icons.search)),
           ],
@@ -70,10 +87,8 @@ class NoteWallState extends State<NoteWall> {
     );
   }
 
-  void rebuild(){
-    setState(() {
-
-    });
+  void rebuild() {
+    setState(() {});
   }
 
   void deleteNote(int id) {
@@ -83,9 +98,25 @@ class NoteWallState extends State<NoteWall> {
     });
   }
 
-  void updateNote(int id){
+  void updateNote(int id) {
     setState(() {
-      _entryList[id] = WallEntry(NoteList().getNotes()[id]);
+      for (WallEntry entry in _entryList) {
+        if (entry.getId() == id) {
+          entry = WallEntry(NoteList().getNotes()[id]);
+          break;
+        }
+      }
+    });
+  }
+
+  void updateNoteEntries() {
+    NoteList().sortNotesByDeadline();
+    _entryList.clear();
+    NoteList().getNotes().forEach((note) {
+      if (_searchedSubstring == "" ||
+          note.getContent().contains(_searchedSubstring)) {
+        _entryList.add(WallEntry(note));
+      }
     });
   }
 
@@ -107,15 +138,7 @@ class NoteWallState extends State<NoteWall> {
     );
   }
 
-  void onSearchPressed() {}
-
-  void onMenuPressed() {}
-
-  void updateNoteEntries() {
-    NoteList().sortNotesByDeadline();
-    _entryList.clear();
-    NoteList().getNotes().forEach((note) {
-      _entryList.add(WallEntry(note));
-    });
+  void onSearchPressed() {
+    rebuild();
   }
 }

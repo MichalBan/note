@@ -74,6 +74,10 @@ class WallEntry extends StatelessWidget {
     return DeadlineColourist().getProperColor(percent);
   }
 
+  int getId(){
+    return _itsNote.getId();
+  }
+
   int calculateDeadlinePercent() {
     if (_itsNote.getDeadline() == null) {
       return 101;
